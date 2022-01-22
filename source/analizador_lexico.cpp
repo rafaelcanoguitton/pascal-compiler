@@ -269,9 +269,11 @@ vector<Token> AnalizadorLexico::getTokens()
                     }
                     if (temp == '+' || temp == '-')
                     {
-                        
-                        if(!(peekChar()>='0' && peekChar()<='9')){
-                            
+                        num += c;
+                        c = getChar();
+                        temp = peekChar();
+                        if(!(temp>='0' && temp<='9')){
+                            foundSpecialCase = true;
                             string linewSpaces(pointer, ' ');
                             errors.push_back("Error: número no válido en linea " + to_string(currLine) + " columna " + to_string(pointer) + "\n" +
                                              line + "\n" + linewSpaces + "^" + "\n");
@@ -298,6 +300,9 @@ vector<Token> AnalizadorLexico::getTokens()
                 num += c;
                 c = getChar();
             }
+            if(foundSpecialCase){
+                num.pop_back();
+            }
             if (isFloat)
             {
                 tokens.push_back(Token("FLOAT", num, currLine, pointer));
@@ -311,7 +316,7 @@ vector<Token> AnalizadorLexico::getTokens()
                 pointer = 0;
                 line = "";
             }
-            if(!foundSpecialOperator){
+            if(!foundSpecialOperator && !foundSpecialCase){
                 c = getChar();
             }
             if(foundSpecialCase){
