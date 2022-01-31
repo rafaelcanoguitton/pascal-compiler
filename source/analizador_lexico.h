@@ -4,25 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include "token.h"
 using namespace std;
 
-class Token
-{
-public:
-    Token(string tokentype, string tokenval, int ln, int col);
-    string getType();
-    string getValue();
-    int getLine();
-    int getColumn();
-    void print();
-    void verbosePrint();
-
-private:
-    string type;
-    string value;
-    int line;
-    int column;
-};
 class AnalizadorLexico
 {
 public:

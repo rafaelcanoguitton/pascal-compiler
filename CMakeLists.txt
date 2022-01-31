@@ -7,4 +7,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include_directories($(CMAKE_CURRENT_SOURCE_DIR)/source)
 
-add_executable(pascal-compiler source/main.cpp)
+file(GLOB SOURCES "source/*.cpp")
+file(GLOB HEADERS "source/*.h")
+
+
+add_executable(pascal-compiler source/main.cpp ${HEADERS} ${SOURCES})

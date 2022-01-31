@@ -20,7 +20,7 @@ map<string, string> compound_operators = {
     {"and", "OP_AND"},
     {"or", "OP_OR"},
     {"not", "OP_NOT"},
-    {"div", "OP_DIV"},
+    {"div", "OP_DIV_"},
     {"mod", "OP_MOD"},
     {"in", "OP_IN"}};
 map<char, string> delimitadores = {
@@ -63,4 +63,10 @@ map<string, string> palabras_reservadas = {
     {"nil", "NIL"},
     {"record", "RECORD"},
     {"type", "TYPE"},
+    {"write", "WRITE"},
+    {"writeln", "WRITELN"},
+    //accounting for type
+    {"string","STRING_TYPE"},
+    {"integer","INTEGER_TYPE"},
+    {"real","REAL_TYPE"},
 };

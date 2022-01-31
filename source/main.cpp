@@ -1,7 +1,7 @@
 #include "iostream"
 #include <vector>
 #include <string.h>
-#include "analizador_lexico.cpp"
+#include "compiler.h"
 using namespace std;
 // main driver function parsing file name and calling the function to read the file
 int main(int argc, char *argv[])
@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
     else
     {
         lex.setFile(temps[0]);
+        filename = temps[0];
     }
     vector<Token> tokens = lex.getTokens();
     cout<<"Tokens: "<<endl;
@@ -80,5 +81,8 @@ int main(int argc, char *argv[])
             token.print();
         }
     }
+    AnalizadorSintactico sint;
+    sint.analizar(tokens);
+    sint.toJSON(filename);
     return 0;
 }
