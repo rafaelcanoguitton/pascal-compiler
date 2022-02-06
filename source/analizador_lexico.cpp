@@ -351,5 +351,6 @@ vector<Token> AnalizadorLexico::getTokens()
     {
         cout << error;
     }
+    tokens.push_back(Token("EOF", "EOF", currLine, pointer));
     return tokens;
 }

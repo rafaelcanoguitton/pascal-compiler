@@ -68,5 +68,5 @@ map<string, string> palabras_reservadas = {
     //accounting for type
     {"string","STRING_TYPE"},
     {"integer","INTEGER_TYPE"},
-    {"real","REAL_TYPE"},
+    {"float","FLOAT_TYPE"},
 };

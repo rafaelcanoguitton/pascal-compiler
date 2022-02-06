@@ -41,3 +41,32 @@
     WriteLn → writeLn ( Value, Value, Value);
     Write → write (Expr);//<-
     To → to | downto
+
+# Every Follow from every non-terminal
+
+    ConstBlock → var
+    ConstList → var, id (SINCE CONSTLIST IS RECURSIVE)
+    Value → ;, To, Follow(Factor), ), , , 
+    VarBlock → begin
+    VarList → id (since varlist is recursive),  begin
+    VarDecl → :, id
+    Type → ;
+    StatementList → First(Statement)
+    Statement → ;, First(Statement)
+    ForStatement → First(Statement)
+    IfStatement → First(Statement)
+    Assign → ;, First(Statement)
+    Expr → ;, First(Expr'),),
+    Expr' → Follow(Expr')
+    Expr2 → First(Expr'), First(Expr3), RelOp
+    Expr2' →  Follow(Expr2), RelOp
+    Expr3 → First(Expr2')
+    Expr3' → +,-, First(Expr2')
+    Term → First(Expr3')
+    Term' → First(Expr3'), *,/,div/mod
+    Factor → First(Term')
+    RelOp → First(Expr3)
+    BooleanOp → First(Expr2)
+    WriteLn → First(Statement)
+    Write → First(Statement)
+    To → First(Expr)

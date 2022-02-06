@@ -83,6 +83,11 @@ int main(int argc, char *argv[])
     }
     AnalizadorSintactico sint;
     sint.analizar(tokens);
+    if(sint.errors.size()>0){
+        for(auto error:sint.errors){
+            cout<<error<<endl;
+        }
+    }
     sint.toJSON(filename);
     return 0;
 }
