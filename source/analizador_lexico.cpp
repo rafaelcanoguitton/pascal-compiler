@@ -1,6 +1,5 @@
 #include "analizador_lexico.h"
 #include "stdlib.h"
-#include "constraints.h"
 #include <cctype>
 AnalizadorLexico::AnalizadorLexico(string filename)
 {

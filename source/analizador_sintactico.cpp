@@ -27,9 +27,9 @@ void AnalizadorSintactico::parseFactor(vector<Token> tokens, int &pos, ParseTree
     if( tokens[pos].getType() == "INT" || tokens[pos].getType() =="STRING" || tokens[pos].getType() == "FLOAT"){
         ParseTreeNode* factor = new ParseTreeNode("factor", "", tokens[pos].getLine(), tokens[pos].getColumn());
         root->addChild(factor);
-        ParseTreeNode* Value = new ParseTreeNode("value", "", tokens[pos].getLine(), tokens[pos].getColumn());
+        ParseTreeNode* Value = new ParseTreeNode("value", tokens[pos].getType(), tokens[pos].getLine(), tokens[pos].getColumn());
         factor->addChild(Value);
-        Value->addChild(new ParseTreeNode(tokens[pos].getValue(), tokens[pos].getValue() , tokens[pos].getLine(), tokens[pos].getColumn()));
+        Value->addChild(new ParseTreeNode(tokens[pos].getValue(), tokens[pos].getType() , tokens[pos].getLine(), tokens[pos].getColumn()));
         pos++;
     }
     else if (tokens[pos].getType()== "ID"){
@@ -280,7 +280,7 @@ void AnalizadorSintactico::parseStatement(vector<Token> tokens, int &pos, ParseT
             pos++;
         }
         if (tokens[pos].getType() == "STRING" || tokens[pos].getType() == "INT" || tokens[pos].getType() == "FLOAT" || tokens[pos].getType() == "ID") {
-            ParseTreeNode* Value = new ParseTreeNode("Value", "", tokens[pos].getLine(), tokens[pos].getColumn());
+            ParseTreeNode* Value = new ParseTreeNode("Value", tokens[pos].getType(), tokens[pos].getLine(), tokens[pos].getColumn());
             temp2->addChild(Value);
             Value->addChild(new ParseTreeNode(tokens[pos].getValue(), tokens[pos].getValue(), tokens[pos].getLine(), tokens[pos].getColumn()));
             pos++;
@@ -288,7 +288,7 @@ void AnalizadorSintactico::parseStatement(vector<Token> tokens, int &pos, ParseT
                 temp2->addChild(new ParseTreeNode("COMA", "", tokens[pos].getLine(), tokens[pos].getColumn()));
                 pos++;
                 if (tokens[pos].getType() == "STRING" || tokens[pos].getType() == "INT" || tokens[pos].getType() == "FLOAT" || tokens[pos].getType() == "ID") {
-                    Value = new ParseTreeNode("Value", "", tokens[pos].getLine(), tokens[pos].getColumn());
+                    Value = new ParseTreeNode("Value", tokens[pos].getType(), tokens[pos].getLine(), tokens[pos].getColumn());
                     temp2->addChild(Value);
                     Value->addChild(new ParseTreeNode(tokens[pos].getValue(), tokens[pos].getValue(), tokens[pos].getLine(), tokens[pos].getColumn()));
                     pos++;
@@ -296,7 +296,7 @@ void AnalizadorSintactico::parseStatement(vector<Token> tokens, int &pos, ParseT
                         temp2->addChild(new ParseTreeNode("COMA", "", tokens[pos].getLine(), tokens[pos].getColumn()));
                         pos++;
                         if (tokens[pos].getType() == "STRING" || tokens[pos].getType() == "INT" || tokens[pos].getType() == "FLOAT" || tokens[pos].getType() == "ID") {
-                            Value = new ParseTreeNode("Value", "", tokens[pos].getLine(), tokens[pos].getColumn());
+                            Value = new ParseTreeNode("Value", tokens[pos].getType(), tokens[pos].getLine(), tokens[pos].getColumn());
                             temp2->addChild(Value);
                             Value->addChild(new ParseTreeNode(tokens[pos].getValue(), tokens[pos].getValue(), tokens[pos].getLine(), tokens[pos].getColumn()));
                             pos++;
@@ -344,7 +344,7 @@ void AnalizadorSintactico::parseStatement(vector<Token> tokens, int &pos, ParseT
             temp2->addChild(new ParseTreeNode("PARENTESIS_IZQ", "", tokens[pos].getLine(), tokens[pos].getColumn()));
             pos++;
         }        
-        parseExpression(tokens, pos, temp);
+        parseExpression(tokens, pos, temp2);
         if(tokens[pos].getType() != "PARENTESIS_DER"){
             errors.push_back("Error on line " + to_string(tokens[pos].getLine()) + " column " + to_string(tokens[pos].getColumn()) + ": ) expected but got " + tokens[pos].getValue());
             vector<string> expected = {"INT","FLOAT","STRING","PARENTESIS_IZQ","NOT","ID","FOR","IF","WRITELN","WRITE","BREAK","CONTINUE", "PUNTO_COMA"};
@@ -490,7 +490,7 @@ void AnalizadorSintactico::parseConstList(vector<Token> tokens, int &pos, ParseT
     if(tokens[pos].getType() == "ID"){
         ParseTreeNode* constList = new ParseTreeNode("ConstList", "", tokens[pos].getLine(), tokens[pos].getColumn());
         root->addChild(constList);
-        constList->addChild(new ParseTreeNode("ID", "", tokens[pos].getLine(), tokens[pos].getColumn()));
+        constList->addChild(new ParseTreeNode(tokens[pos].getValue(), "", tokens[pos].getLine(), tokens[pos].getColumn()));
         pos++;
         if(tokens[pos].getType() != "EQUAL"){
             errors.push_back("Error on line "+to_string(tokens[pos].getLine())+" column "+to_string(tokens[pos].getColumn())+" Expected EQUAL but got "+tokens[pos].getValue());
@@ -505,9 +505,9 @@ void AnalizadorSintactico::parseConstList(vector<Token> tokens, int &pos, ParseT
             vector<string> expected = {"PUNTO_COMA","VAR"};
             panicModeRecovery(tokens,pos,constList,expected);
         }else{
-            ParseTreeNode* Value = new ParseTreeNode("Value", "", tokens[pos].getLine(), tokens[pos].getColumn());
+            ParseTreeNode* Value = new ParseTreeNode("Value", tokens[pos].getType(), tokens[pos].getLine(), tokens[pos].getColumn());
             constList->addChild(Value);
-            Value->addChild(new ParseTreeNode(tokens[pos].getValue(), "", tokens[pos].getLine(), tokens[pos].getColumn()));
+            Value->addChild(new ParseTreeNode(tokens[pos].getValue(), tokens[pos].getType(), tokens[pos].getLine(), tokens[pos].getColumn()));
             pos++;
         }
         if(tokens[pos].getType() != "PUNTO_COMA"){
@@ -556,8 +556,8 @@ void AnalizadorSintactico::parseVarList(vector<Token> tokens, int &pos, ParseTre
         pos++;
     }
     //revisit since i don't understand
-    if(tokens[pos].getType() != "STRING_TYPE"&& tokens[pos].getType() != "INTEGER_TYPE" && tokens[pos].getType() != "REAL_TYPE"){
-        errors.push_back("Error on line "+to_string(tokens[pos].getLine())+" column "+to_string(tokens[pos].getColumn())+" Expected STRING_TYPE, INTEGER_TYPE or REAL_TYPE but got "+tokens[pos].getValue());
+    if(tokens[pos].getType() != "STRING_TYPE"&& tokens[pos].getType() != "INTEGER_TYPE" && tokens[pos].getType() != "FLOAT_TYPE"){
+        errors.push_back("Error on line "+to_string(tokens[pos].getLine())+" column "+to_string(tokens[pos].getColumn())+" Expected STRING_TYPE, INTEGER_TYPE or FLOAT_TYPE but got "+tokens[pos].getValue());
         vector<string> expected = {"PUNTO_COMA","VAR","BEGIN"};
         panicModeRecovery(tokens,pos,varList,expected);
     } else {
@@ -580,7 +580,7 @@ void AnalizadorSintactico::parseVarDecl(vector<Token> tokens, int &pos, ParseTre
     if(tokens[pos].getType() == "ID"){
         ParseTreeNode* varDecl = new ParseTreeNode("VarDecl", "", tokens[pos].getLine(), tokens[pos].getColumn());
         root->addChild(varDecl);
-        varDecl->addChild(new ParseTreeNode("ID", "", tokens[pos].getLine(), tokens[pos].getColumn()));
+        varDecl->addChild(new ParseTreeNode(tokens[pos].getValue(), "", tokens[pos].getLine(), tokens[pos].getColumn()));
         pos++;
         if(tokens[pos].getType() == "COMA"){
             varDecl->addChild(new ParseTreeNode("COMA", "", tokens[pos].getLine(), tokens[pos].getColumn()));
@@ -646,7 +646,7 @@ void AnalizadorSintactico::analizar(vector<Token> tokens)
     }
     if(tokens[i].getType() == "ID")
     {
-        current->addChild(new ParseTreeNode("id", tokens[i].getValue(), tokens[i].getLine(), tokens[i].getColumn()));
+        current->addChild(new ParseTreeNode(tokens[i].getValue(), tokens[i].getValue(), tokens[i].getLine(), tokens[i].getColumn()));
         i++;
     }
     else
@@ -685,4 +685,7 @@ void AnalizadorSintactico::panicModeRecovery(vector<Token> tokens, int &pos, Par
         pos++;
     }
     root->addChild(new ParseTreeNode("Error","",tokens[pos].getLine(),tokens[pos].getColumn()));
+}
+ParseTree* AnalizadorSintactico::getParseTree(){
+    return &tree;
 }

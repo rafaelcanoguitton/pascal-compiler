@@ -5,6 +5,7 @@
 #include <fstream>
 #include <map>
 #include "token.h"
+#include "constraints.h"
 using namespace std;
 
 class AnalizadorLexico

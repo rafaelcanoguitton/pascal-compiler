@@ -1,7 +1,7 @@
 #include <string>
 #include <map>
 using namespace std;
-map<string, string> operators =
+static map<string, string> operators =
     {
         {"+", "OP_SUM"},
         {"-", "OP_RES"},
@@ -16,14 +16,14 @@ map<string, string> operators =
         {">", "GREATER"},
         {"^", "OP_POT"},
 };
-map<string, string> compound_operators = {
+static map<string, string> compound_operators = {
     {"and", "OP_AND"},
     {"or", "OP_OR"},
     {"not", "OP_NOT"},
     {"div", "OP_DIV_"},
     {"mod", "OP_MOD"},
     {"in", "OP_IN"}};
-map<char, string> delimitadores = {
+static map<char, string> delimitadores = {
     {',', "COMA"},
     {';', "PUNTO_COMA"},
     {':', "DOS_PUNTOS"},
@@ -33,7 +33,7 @@ map<char, string> delimitadores = {
     {'[', "CORCHETE_IZQ"},
     {']', "CORCHETE_DER"},
 };
-map<string, string> palabras_reservadas = {
+static map<string, string> palabras_reservadas = {
     {"array", "ARRAY"},
     {"downto", "DOWNTO"},
     {"function", "FUNCTION"},
@@ -68,5 +68,5 @@ map<string, string> palabras_reservadas = {
     //accounting for type
     {"string","STRING_TYPE"},
     {"integer","INTEGER_TYPE"},
-    {"float","FLOAT_TYPE"},
+    {"real","FLOAT_TYPE"},
 };
