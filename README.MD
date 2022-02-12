@@ -37,5 +37,9 @@ As the current list of features we have the following:
 - **¡Colors!** - The compiler will print the tokens in a colorful manner for visual aid.
 
 - **--verbose** - Activates the verbose mode in order to provide additional details.
+  
+- **--visualize** - To open the parse tree in the program you specify.
+  
+- **--run** - To run the generated program in python.
 
 
